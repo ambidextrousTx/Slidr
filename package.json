@@ -1,0 +1,23 @@
+{
+  "name": "slidr",
+  "version": "1.0.0",
+  "description": "Electron-based random image slideshow viewer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ambidextrousTx/Slidr.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ambidextrousTx/Slidr/issues"
+  },
+  "homepage": "https://github.com/ambidextrousTx/Slidr#readme",
+  "dependencies": {
+    "electron": "^38.4.0"
+  }
+}

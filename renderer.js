@@ -1,7 +1,7 @@
 const fs = require('fs').promises
 const path = require('path')
 
-const imageFolder = path.join(__dirname, 'images')
+const imageFolder = process.argv[process.argv.length - 1] // this is the additionalArguments
 const slideshowImage = document.getElementById('slideshow-image')
 let images = []
 let currentIdx = 0;
@@ -27,9 +27,11 @@ async function loadImages() {
 }
 
 function shuffleArray(array) {
+  console.log(array)
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
-    [array[i], array[j]] = [array[j], array[i]]
+
+    // [array[i], array[j]] = [array[j], array[i]]
   }
 }
 

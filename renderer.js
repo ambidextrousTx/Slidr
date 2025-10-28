@@ -17,7 +17,7 @@ async function loadImages() {
     shuffleArray(images)
     if (images.length > 0) {
       slideshowImage.src = images[0]
-      startSlidshow()
+      startSlideshow()
     } else {
       console.log('No images read in the folder: ', err)
     }
@@ -35,7 +35,7 @@ function shuffleArray(array) {
   }
 }
 
-function startSlidshow() {
+function startSlideshow() {
   setInterval(() => {
     currentIdx = (currentIdx + 1) % images.length
     slideshowImage.src = images[currentIdx]

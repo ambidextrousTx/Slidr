@@ -1,46 +1,22 @@
 const fs = require('fs').promises
 const path = require('path')
+const { loadImagePaths, shuffleArray } = require('./src/slideshow.js')
 
 const imageFolder = process.argv[process.argv.length - 1] // this is the additionalArguments
-const slideshowImage = document.getElementById('slideshow-image')
-let images = []
-let currentIdx = 0;
-const slideInterval = 3000;
+const slideShowElement = document.getElementById('slideshow-image')
+const SlideshowController = require('./src/slideshowController.js')
+const controller = new SlideshowController(slideShowElement, { interval: 3000 })
 
-async function loadImages() {
+async function init() {
   try {
-    const files = await fs.readdir(imageFolder)
-    images = files
-            .filter(file => /\.(jpg|jpeg|png|gif)$/i.test(file))
-            .map(file => path.join(imageFolder, file))
-
-    shuffleArray(images)
-    if (images.length > 0) {
-      slideshowImage.src = images[0]
-      startSlideshow()
-    } else {
-      console.log('No images read in the folder: ', err)
-    }
+    const imagePaths = await loadImagePaths(imageFolder, fs, path)
+    shuffleArray(imagePaths)
+    controller.setImages(imagePaths)
+    controller.start()
   } catch (err) {
-    console.log('Error reading image folder: ', err)
+    console.error('Failed to load images: ', err)
+    slideShowElement.alt = 'Error loading images'
   }
 }
 
-function shuffleArray(array) {
-  console.log(array)
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    let temp = array[i]
-    array[i] = array[j]
-    array[j] = temp
-  }
-}
-
-function startSlideshow() {
-  setInterval(() => {
-    currentIdx = (currentIdx + 1) % images.length
-    slideshowImage.src = images[currentIdx]
-  }, slideInterval)
-}
-
-window.onload = loadImages
+window.addEventListener('load', init)

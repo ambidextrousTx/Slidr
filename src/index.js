@@ -13,10 +13,11 @@ function createWindow() {
     width: 1200,
     height: 1200,
     webPreferences: {
-      preload: path.join(__dirname, 'renderer.js'),
+      //preload: path.join(__dirname, 'renderer.js'),
       nodeIntegration: true,
       contextIsolation: false,
-      additionalArguments: [imageFolder]
+      additionalArguments: [imageFolder],
+      sandbox: false
     }
   })
 
@@ -32,7 +33,6 @@ app.whenReady().then(() => {
     }
   })
 })
-
 
 app.on('window-all-closed', () => {
   if (process.platform != 'darwin') {

@@ -24,7 +24,7 @@ function shuffleArray(array) {
   }
 }
 
-export default {
+module.exports = {
   loadImagePaths,
-  shuffleArray,
-};
+  shuffleArray
+}

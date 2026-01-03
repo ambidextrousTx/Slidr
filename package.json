@@ -8,8 +8,7 @@
     "start": "electron ."
   },
   "jest": {
-    "runner": "jest-electron-runner",
-    "testEnvironment": "jsdom"
+    "testEnvironment": "node"
   },
   "repository": {
     "type": "git",

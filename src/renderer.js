@@ -1,6 +1,6 @@
 const fs = require('fs').promises
 const path = require('path')
-const { loadImagePaths, shuffleArray } = require('./src/slideshow.js')
+const { loadImagePaths, shuffleArray } = require('./src/slideshowUtils.js')
 
 const imageFolder = process.argv[process.argv.length - 1] // this is the additionalArguments
 const slideShowElement = document.getElementById('slideshow-image')

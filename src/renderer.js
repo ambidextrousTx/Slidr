@@ -7,6 +7,16 @@ const slideShowElement = document.getElementById('slideshow-image')
 const SlideshowController = require('./src/slideshowController.js')
 const controller = new SlideshowController(slideShowElement, { interval: 3000 })
 
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowRight') {
+        controller.next();
+        // Optional: event.preventDefault() if you want to stop page scrolling etc.
+    }
+    else if (event.key === 'ArrowLeft') {
+        controller.prev();
+    }
+});
+
 async function init() {
   try {
     const imagePaths = await loadImagePaths(imageFolder, fs, path)

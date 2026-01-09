@@ -35,6 +35,13 @@ class SlideshowController {
     this.currentIndex = (this.currentIndex + 1) % this.images.length;
     this.imageElement.src = this.images[this.currentIndex];
   }
+
+  prev() {
+    if (this.images.length === 0) return;
+    // Wrap around
+    this.currentIndex = (this.currentIndex - 1 + this.images.length) % this.images.length;
+    this.imageElement.src = this.images[this.currentIndex];
+  }
 }
 
 module.exports = SlideshowController

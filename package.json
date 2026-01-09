@@ -4,11 +4,14 @@
   "description": "Electron-based random image slideshow viewer",
   "main": "src/index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --coverage",
     "start": "electron ."
   },
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "collectCoverage": true,
+    "coverageDirectory": "coverage",
+    "coverageReporters": ["html", "text"]
   },
   "repository": {
     "type": "git",

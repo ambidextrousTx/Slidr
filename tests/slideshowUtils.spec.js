@@ -1,6 +1,7 @@
 const { loadImagePaths, shuffleArray } = require('../src/slideshowUtils.js')
 
 describe('slideshowUtils', () => {
+
   it('shuffles an array in place without changing length or contents', async () => {
     let originalArray = [1, 2, 3, 4, 5]
     let copy = [...originalArray]
@@ -9,9 +10,7 @@ describe('slideshowUtils', () => {
     expect(copy.length).toEqual(originalArray.length)
     expect(copy.sort()).toEqual(originalArray.sort())
   })
-})
 
-describe('loadImagePaths', () => {
   it('loads and filters image paths from a folder', async () => {
 
     const mockFs = {
@@ -39,5 +38,5 @@ describe('loadImagePaths', () => {
     ]);
     expect(mockFs.readdir).toHaveBeenCalledWith('/fake/folder')
   })
-  
 })
+

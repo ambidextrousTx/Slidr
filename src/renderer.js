@@ -5,15 +5,19 @@ const { loadImagePaths, shuffleArray } = require('./src/slideshowUtils.js')
 const imageFolder = process.argv[process.argv.length - 1] // this is the additionalArguments
 const slideShowElement = document.getElementById('slideshow-image')
 const SlideshowController = require('./src/slideshowController.js')
-const controller = new SlideshowController(slideShowElement, { interval: 3000 })
+const controller = new SlideshowController(slideShowElement, {
+  interval: 3000,
+  resumeDelayMs: 15000 
+})
 
 document.addEventListener('keydown', (event) => {
     if (event.key === 'ArrowRight') {
         controller.next();
-        // Optional: event.preventDefault() if you want to stop page scrolling etc.
+        controller.userInteracted();
     }
     else if (event.key === 'ArrowLeft') {
         controller.prev();
+        controller.userInteracted();
     }
 });
 

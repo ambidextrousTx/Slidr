@@ -9,20 +9,28 @@ class SlideshowController {
     this.resumeTimeoutId = null;
     this.resumeDelayMs = options.resumeDelay || 15000; // 15 seconds default
     this.modeIndicator = document.getElementById('mode-indicator');
+    this.modeText = document.getElementById('mode-text');
+    this.countText = document.getElementById('media-count');
     console.log(`resumeDelayMs set to ${this.resumeDelayMs}`)
   }
 
-  updateModeIndicator() {
-  if (!this.modeIndicator) return;
+  updateStatusDisplay() {
+    if (!this.modeText || !this.countText) return;
 
-  if (this.isAutoplaying) {
-    this.modeIndicator.textContent = 'Auto';
-    this.modeIndicator.classList.remove('paused');
-  } else {
-    this.modeIndicator.textContent = 'Manual';
-    this.modeIndicator.classList.add('paused');
+    // Mode
+    if (this.isAutoplaying) {
+      this.modeText.textContent = 'Auto';
+      this.modeText.parentElement.classList.remove('paused');
+    } else {
+      this.modeText.textContent = 'Manual';
+      this.modeText.parentElement.classList.add('paused');
+    }
+
+    // Count (1-based index)
+    const current = this.images.length > 0 ? this.currentIndex + 1 : 0;
+    const total = this.images.length;
+    this.countText.textContent = `${current} / ${total}`;
   }
-}
 
   setImages(images) {
     this.images = images;
@@ -30,6 +38,7 @@ class SlideshowController {
     if (images.length > 0) {
       this.imageElement.src = images[0];
     }
+    this.updateStatusDisplay();
   }
 
   userInteracted() {
@@ -50,7 +59,7 @@ class SlideshowController {
   start() {
     if (this.timerId || this.images.length === 0) return;
     this.isAutoplaying = true;
-    this.updateModeIndicator();
+    this.updateStatusDisplay();
     this.timerId = setInterval(() => {
       this.next();
     }, this.interval);
@@ -67,6 +76,7 @@ class SlideshowController {
     if (this.images.length === 0) return;
     this.currentIndex = (this.currentIndex + 1) % this.images.length;
     this.imageElement.src = this.images[this.currentIndex];
+    this.updateStatusDisplay();
   }
 
   prev() {
@@ -74,6 +84,7 @@ class SlideshowController {
     // Wrap around
     this.currentIndex = (this.currentIndex - 1 + this.images.length) % this.images.length;
     this.imageElement.src = this.images[this.currentIndex];
+    this.updateStatusDisplay();
   }
 
   pause() {
@@ -83,7 +94,7 @@ class SlideshowController {
     }
 
     this.isAutoplaying = false;
-    this.updateModeIndicator();
+    this.updateStatusDisplay();
   }
 }
 

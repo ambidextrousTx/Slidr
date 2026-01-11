@@ -8,7 +8,7 @@
 async function loadImagePaths(folderPath, fs, path) {
   const files = await fs.readdir(folderPath);
   return files
-    .filter(file => /\.(jpe?g|png|gif)$/i.test(file))
+    .filter(file => /\.(jpe?g|png|gif|avif|webp)$/i.test(file))
     .map(file => path.join(folderPath, file));
 }
 

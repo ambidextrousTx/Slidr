@@ -8,8 +8,21 @@ class SlideshowController {
     this.isAutoplaying = false;
     this.resumeTimeoutId = null;
     this.resumeDelayMs = options.resumeDelay || 15000; // 15 seconds default
+    this.modeIndicator = document.getElementById('mode-indicator');
     console.log(`resumeDelayMs set to ${this.resumeDelayMs}`)
   }
+
+  updateModeIndicator() {
+  if (!this.modeIndicator) return;
+
+  if (this.isAutoplaying) {
+    this.modeIndicator.textContent = 'Auto';
+    this.modeIndicator.classList.remove('paused');
+  } else {
+    this.modeIndicator.textContent = 'Manual';
+    this.modeIndicator.classList.add('paused');
+  }
+}
 
   setImages(images) {
     this.images = images;
@@ -37,6 +50,7 @@ class SlideshowController {
   start() {
     if (this.timerId || this.images.length === 0) return;
     this.isAutoplaying = true;
+    this.updateModeIndicator();
     this.timerId = setInterval(() => {
       this.next();
     }, this.interval);
@@ -69,6 +83,7 @@ class SlideshowController {
     }
 
     this.isAutoplaying = false;
+    this.updateModeIndicator();
   }
 }
 

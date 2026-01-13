@@ -6,10 +6,41 @@
  * @returns {Promise<string[]>} Array of image paths
  */
 async function loadImagePaths(folderPath, fs, path) {
-  const files = await fs.readdir(folderPath);
-  return files
-    .filter(file => /\.(jpe?g|png|gif|avif|webp)$/i.test(file))
-    .map(file => path.join(folderPath, file));
+  const imageExtensions = new Set([
+    '.jpg', '.jpeg', '.png', '.gif', '.avif', '.webp',
+  ]);
+
+  const result = [];
+
+  /**
+   * Recursive helper function
+   * @param {string} currentDir
+   */
+  async function scanDir(currentDir) {
+    try {
+      const entries = await fs.readdir(currentDir, { withFileTypes: true });
+
+      for (const entry of entries) {
+        const fullPath = path.join(currentDir, entry.name);
+
+        if (entry.isDirectory()) {
+          // Recurse into subdirectory
+          await scanDir(fullPath);
+        }
+        else if (entry.isFile()) {
+          const ext = path.extname(entry.name).toLowerCase();
+          if (imageExtensions.has(ext)) {
+            result.push(fullPath);
+          }
+        }
+      }
+    } catch (err) {
+      console.warn(`Could not read directory ${currentDir}:`, err.message);
+    }
+  }
+
+  await scanDir(folderPath);
+  return result;
 }
 
 /**

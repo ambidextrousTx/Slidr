@@ -1,6 +1,6 @@
 const fs = require('fs').promises
 const path = require('path')
-const { loadImagePaths, shuffleArray } = require('./src/slideshowUtils.js')
+const { loadMediaPaths, shuffleArray } = require('./src/slideshowUtils.js')
 
 const imageFolder = process.argv[process.argv.length - 1] // this is the additionalArguments
 const slideShowElement = document.getElementById('slideshow-image')
@@ -23,13 +23,13 @@ document.addEventListener('keydown', (event) => {
 
 async function init() {
   try {
-    const imagePaths = await loadImagePaths(imageFolder, fs, path)
+    const imagePaths = await loadMediaPaths(imageFolder, fs, path)
     shuffleArray(imagePaths)
     controller.setImages(imagePaths)
     controller.start()
   } catch (err) {
-    console.error('Failed to load images: ', err)
-    slideShowElement.alt = 'Error loading images'
+    console.error('Failed to load media: ', err)
+    slideShowElement.alt = 'Error loading media'
   }
 }
 

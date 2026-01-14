@@ -5,9 +5,10 @@
  * @param {Object} path - Path module
  * @returns {Promise<string[]>} Array of image paths
  */
-async function loadImagePaths(folderPath, fs, path) {
+async function loadMediaPaths(folderPath, fs, path) {
   const imageExtensions = new Set([
     '.jpg', '.jpeg', '.png', '.gif', '.avif', '.webp',
+    'mp4', 'webm'
   ]);
 
   const result = [];
@@ -56,6 +57,6 @@ function shuffleArray(array) {
 }
 
 module.exports = {
-  loadImagePaths,
+  loadMediaPaths,
   shuffleArray
 }

@@ -5,13 +5,34 @@
   "main": "src/index.js",
   "scripts": {
     "test": "jest --coverage",
+    "test:node": "jest --selectProjects=node",
+    "test:jsdom": "jest --selectProjects=jsdom",
+    "test:watch": "jest --watch",
     "start": "electron ."
   },
   "jest": {
-    "testEnvironment": "node",
+    "projects": [
+      {
+        "displayName": "node",
+        "testEnvironment": "node",
+        "testMatch": [
+          "**/*.spec.js"
+        ]
+      },
+      {
+        "displayName": "jsdom",
+        "testEnvironment": "jsdom",
+        "testMatch": [
+          "**/*.dom.spec.js"
+        ]
+      }
+    ],
     "collectCoverage": true,
     "coverageDirectory": "coverage",
-    "coverageReporters": ["html", "text"]
+    "coverageReporters": [
+      "html",
+      "text"
+    ]
   },
   "repository": {
     "type": "git",
@@ -29,6 +50,8 @@
   },
   "devDependencies": {
     "jest": "^29.7.0",
-    "jest-electron-runner": "^0.0.2"
+    "jest-electron-runner": "^0.0.2",
+    "jest-environment-jsdom": "27.4.6",
+    "jsdom": "^27.0.1"
   }
 }

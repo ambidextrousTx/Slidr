@@ -1,4 +1,4 @@
-const { loadImagePaths, shuffleArray } = require('../src/slideshowUtils.js')
+const { loadMediaPaths, shuffleArray } = require('../src/slideshowUtils.js')
 
 describe('slideshowUtils', () => {
 
@@ -21,14 +21,15 @@ describe('slideshowUtils', () => {
         'image.gif',
         'photo3.JPEG',
         'notes.txt'
-      ])
+      ]),
+      isDirectory: jest.fn().mockResolvedValue(false)
     };
 
     const mockPath = {
       join: jest.fn((folder, file) => `${folder}/${file}`)
     };
     
-    const result = await loadImagePaths('/fake/folder', mockFs, mockPath)
+    const result = await loadMediaPaths('/fake/folder', mockFs, mockPath)
     expect(result).toHaveLength(4); // jpg, png, gif, JPEG
     expect(result).toEqual([
       '/fake/folder/photo1.jpg',

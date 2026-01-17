@@ -1,8 +1,11 @@
 class SlideshowController {
   constructor(imageElement, options = {}) {
-    this.imageElement = imageElement;
+    this.imageElement = document.getElementById('slideshow-image');
+    this.videoElement = document.getElementById('slideshow-video');
+    this.currentMediaType = '';
+    this.currentSrc = ''; 
     this.interval = options.interval || 3000;
-    this.images = [];
+    this.media = [];
     this.currentIndex = 0;
     this.timerId = null;
     this.isAutoplaying = false;
@@ -12,6 +15,46 @@ class SlideshowController {
     this.modeText = document.getElementById('mode-text');
     this.countText = document.getElementById('media-count');
     console.log(`resumeDelayMs set to ${this.resumeDelayMs}`)
+
+    this.videoElement.addEventListener('ended', () => {
+      if (this.isAutoPlaying) {
+        this.next();
+      }
+    });
+  }
+
+  showMedia(path) {
+    if (!path) return;
+
+    const ext = path.split('.').pop().toLowerCase();
+    const isVideo = ['mp4', 'webm'].includes(ext);
+
+    // Fade out current active
+    if (this.currentMediaType === 'image') {
+      this.imageElement.classList.remove('active');
+    } else if (this.currentMediaType === 'video') {
+      this.videoElement.pause();           // important!
+      this.videoElement.currentTime = 0;   // reset for next time
+      this.videoElement.classList.remove('active');
+    }
+
+    // Small delay to let fade-out start (makes it smoother)
+    setTimeout(() => {
+      if (isVideo) {
+        this.videoElement.src = path;
+        this.videoElement.load();          // sometimes needed
+        this.videoElement.play().catch(e => console.warn('Video play failed:', e));
+        this.videoElement.classList.add('active');
+        this.currentMediaType = 'video';
+      } else {
+        this.imageElement.src = path;
+        this.imageElement.classList.add('active');
+        this.currentMediaType = 'image';
+      }
+
+      this.currentSrc = path;
+      this.updateStatusDisplay();   // your counter/mode
+    }, 50);   // tiny delay — adjust or remove
   }
 
   updateStatusDisplay() {
@@ -27,16 +70,16 @@ class SlideshowController {
     }
 
     // Count (1-based index)
-    const current = this.images.length > 0 ? this.currentIndex + 1 : 0;
-    const total = this.images.length;
+    const current = this.media.length > 0 ? this.currentIndex + 1 : 0;
+    const total = this.media.length;
     this.countText.textContent = `${current} / ${total}`;
   }
 
-  setImages(images) {
-    this.images = images;
+  setMedia(mediaPaths) {
+    this.media = mediaPaths;
     this.currentIndex = 0;
-    if (images.length > 0) {
-      this.imageElement.src = images[0];
+    if (mediaPaths.length > 0) {
+      this.showMedia(mediaPaths[0])
     }
     this.updateStatusDisplay();
   }
@@ -73,17 +116,17 @@ class SlideshowController {
   }
 
   next() {
-    if (this.images.length === 0) return;
-    this.currentIndex = (this.currentIndex + 1) % this.images.length;
-    this.imageElement.src = this.images[this.currentIndex];
+    if (this.media.length === 0) return;
+    this.currentIndex = (this.currentIndex + 1) % this.media.length;
+    this.showMedia(this.media[this.currentIndex]);
     this.updateStatusDisplay();
   }
 
   prev() {
-    if (this.images.length === 0) return;
+    if (this.media.length === 0) return;
     // Wrap around
-    this.currentIndex = (this.currentIndex - 1 + this.images.length) % this.images.length;
-    this.imageElement.src = this.images[this.currentIndex];
+    this.currentIndex = (this.currentIndex - 1 + this.media.length) % this.media.length;
+    tihs.showMedia(this.media[this.currentIndex]);
     this.updateStatusDisplay();
   }
 

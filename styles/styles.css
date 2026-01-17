@@ -8,8 +8,10 @@ body {
 }
 
 .slideshow-container {
+  position: relative;
   width: 100%;
-  height: 100%;
+  height: 100vh;
+  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -48,4 +50,24 @@ body {
 .mode-indicator.paused {
   background: rgba(200, 0, 0, 0.6);
   opacity: 0.7;
+}
+
+.media-item {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100%; height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+  pointer-events: none;
+}
+
+.media-item.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.media-item.active {
+  opacity: 1;
+  pointer-events: auto;
 }

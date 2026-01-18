@@ -81,7 +81,6 @@ class SlideshowController {
     if (mediaPaths.length > 0) {
       this.showMedia(mediaPaths[0])
     }
-    this.updateStatusDisplay();
   }
 
   userInteracted() {
@@ -100,7 +99,7 @@ class SlideshowController {
   }
 
   start() {
-    if (this.timerId || this.images.length === 0) return;
+    if (this.timerId || this.media.length === 0) return;
     this.isAutoplaying = true;
     this.updateStatusDisplay();
     this.timerId = setInterval(() => {

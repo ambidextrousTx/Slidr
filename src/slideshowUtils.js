@@ -7,8 +7,7 @@
  */
 async function loadMediaPaths(folderPath, fs, path) {
   const imageExtensions = new Set([
-    '.jpg', '.jpeg', '.png', '.gif', '.avif', '.webp',
-    'mp4', 'webm'
+    '.jpg', '.jpeg', '.png', '.gif', '.avif', '.webp', 'mp4', 'webm'
   ]);
 
   const result = [];
@@ -30,8 +29,10 @@ async function loadMediaPaths(folderPath, fs, path) {
         }
         else if (entry.isFile()) {
           const ext = path.extname(entry.name).toLowerCase();
+          console.log(`Processing: ${entry.name}`)
           if (imageExtensions.has(ext)) {
             result.push(fullPath);
+            console.log(`Pushed: ${fullPath}`)
           }
         }
       }

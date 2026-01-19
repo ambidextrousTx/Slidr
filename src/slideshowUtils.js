@@ -7,7 +7,7 @@
  */
 async function loadMediaPaths(folderPath, fs, path) {
   const imageExtensions = new Set([
-    '.jpg', '.jpeg', '.png', '.gif', '.avif', '.webp', 'mp4', 'webm'
+    '.jpg', '.jpeg', '.png', '.gif', '.avif', '.webp', '.mp4', '.webm'
   ]);
 
   const result = [];

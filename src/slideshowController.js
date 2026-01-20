@@ -14,7 +14,6 @@ class SlideshowController {
     this.modeIndicator = document.getElementById('mode-indicator');
     this.modeText = document.getElementById('mode-text');
     this.countText = document.getElementById('media-count');
-    console.log(`resumeDelayMs set to ${this.resumeDelayMs}`)
 
     this.videoElement.addEventListener('ended', () => {
       if (this.isAutoPlaying) {
@@ -84,7 +83,6 @@ class SlideshowController {
   }
 
   userInteracted() {
-    console.log('userInteracted called')
     this.pause();
 
     if (this.resumeTimeoutId) {

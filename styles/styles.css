@@ -17,7 +17,7 @@ body {
   align-items: center;
 }
 
-#slideshow-image {
+#slideshow-image, #slideshow-video {
   max-width: 90%;
   max-height: 90%;
   object-fit: contain;

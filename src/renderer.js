@@ -24,7 +24,6 @@ document.addEventListener('keydown', (event) => {
 async function init() {
   try {
     const mediaPaths = await loadMediaPaths(imageFolder, fs, path)
-    console.log('mediaPaths: ', mediaPaths)
     shuffleArray(mediaPaths)
     controller.setMedia(mediaPaths)
     controller.start()

@@ -29,10 +29,8 @@ async function loadMediaPaths(folderPath, fs, path) {
         }
         else if (entry.isFile()) {
           const ext = path.extname(entry.name).toLowerCase();
-          console.log(`Processing: ${entry.name}`)
           if (imageExtensions.has(ext)) {
             result.push(fullPath);
-            console.log(`Pushed: ${fullPath}`)
           }
         }
       }

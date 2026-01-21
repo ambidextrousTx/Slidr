@@ -14,19 +14,19 @@ describe('slideshowUtils', () => {
   it('loads and filters image paths from a folder', async () => {
 
     const mockFs = {
-      readdir: jest.fn().mockResolvedValue([
-        'photo1.jpg',
-        'photo2.png',
-        'document.pdf',
-        'image.gif',
-        'photo3.JPEG',
-        'notes.txt'
+      readdir: jest.fn().mockResolvedValueOnce([
+        { name: 'photo1.jpg', isFile: () => true, isDirectory: () => false },
+        { name: 'photo2.png', isFile: () => true, isDirectory: () => false },
+        { name: 'document.pdf', isFile: () => true, isDirectory: () => false },
+        { name: 'image.gif', isFile: () => true, isDirectory: () => false },
+        { name: 'photo3.JPEG', isFile: () => true, isDirectory: () => false },
+        { name: 'notes.txt', isFile: () => true, isDirectory: () => false },
       ]),
-      isDirectory: jest.fn().mockResolvedValue(false)
     };
 
     const mockPath = {
-      join: jest.fn((folder, file) => `${folder}/${file}`)
+      join: jest.fn((folder, file) => `${folder}/${file}`),
+      extname: jest.fn((path) => path.substring(path.lastIndexOf('.'))),
     };
     
     const result = await loadMediaPaths('/fake/folder', mockFs, mockPath)
@@ -37,7 +37,7 @@ describe('slideshowUtils', () => {
       '/fake/folder/image.gif',
       '/fake/folder/photo3.JPEG'
     ]);
-    expect(mockFs.readdir).toHaveBeenCalledWith('/fake/folder')
+    expect(mockFs.readdir).toHaveBeenCalledWith('/fake/folder', {'withFileTypes': true})
   })
 })
 

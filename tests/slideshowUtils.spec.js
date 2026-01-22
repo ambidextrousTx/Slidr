@@ -21,6 +21,7 @@ describe('slideshowUtils', () => {
         { name: 'image.gif', isFile: () => true, isDirectory: () => false },
         { name: 'photo3.JPEG', isFile: () => true, isDirectory: () => false },
         { name: 'notes.txt', isFile: () => true, isDirectory: () => false },
+        { name: 'sample.mp4', isFile: () => true, isDirectory: () => false },
       ]),
     };
 
@@ -30,12 +31,13 @@ describe('slideshowUtils', () => {
     };
     
     const result = await loadMediaPaths('/fake/folder', mockFs, mockPath)
-    expect(result).toHaveLength(4); // jpg, png, gif, JPEG
+    expect(result).toHaveLength(5); // jpg, png, gif, JPEG, mp4
     expect(result).toEqual([
       '/fake/folder/photo1.jpg',
       '/fake/folder/photo2.png',
       '/fake/folder/image.gif',
-      '/fake/folder/photo3.JPEG'
+      '/fake/folder/photo3.JPEG',
+      '/fake/folder/sample.mp4',
     ]);
     expect(mockFs.readdir).toHaveBeenCalledWith('/fake/folder', {'withFileTypes': true})
   })

@@ -1,7 +1,10 @@
 class SlideshowController {
-  constructor(imageElement, options = {}) {
-    this.imageElement = document.getElementById('slideshow-image');
-    this.videoElement = document.getElementById('slideshow-video');
+  constructor(options = {}, deps = {}) {
+    this.imageElement = deps.imageElement || document.getElementById('slideshow-image');
+    this.videoElement = deps.videoElement || document.getElementById('slideshow-video');
+    this.modeIndicator = deps.modeIndicator || document.getElementById('mode-indicator');
+    this.modeText = deps.modeText || document.getElementById('mode-text');
+    this.countText = deps.countText || document.getElementById('media-count');
     this.currentMediaType = '';
     this.currentSrc = ''; 
     this.interval = options.interval || 3000;
@@ -11,12 +14,9 @@ class SlideshowController {
     this.isAutoplaying = false;
     this.resumeTimeoutId = null;
     this.resumeDelayMs = options.resumeDelay || 15000; // 15 seconds default
-    this.modeIndicator = document.getElementById('mode-indicator');
-    this.modeText = document.getElementById('mode-text');
-    this.countText = document.getElementById('media-count');
 
     this.videoElement.addEventListener('ended', () => {
-      if (this.isAutoPlaying) {
+      if (this.isAutoplaying) {
         this.next();
       }
     });
@@ -39,6 +39,7 @@ class SlideshowController {
 
     // Small delay to let fade-out start (makes it smoother)
     setTimeout(() => {
+      console.log('timeout was hit');
       if (isVideo) {
         this.videoElement.src = path;
         this.videoElement.load();          // sometimes needed
@@ -46,13 +47,14 @@ class SlideshowController {
         this.videoElement.classList.add('active');
         this.currentMediaType = 'video';
       } else {
+        console.log('Found image media type');
         this.imageElement.src = path;
         this.imageElement.classList.add('active');
         this.currentMediaType = 'image';
       }
 
       this.currentSrc = path;
-      this.updateStatusDisplay();   // your counter/mode
+      this.updateStatusDisplay();
     }, 50);   // tiny delay — adjust or remove
   }
 
@@ -123,7 +125,7 @@ class SlideshowController {
     if (this.media.length === 0) return;
     // Wrap around
     this.currentIndex = (this.currentIndex - 1 + this.media.length) % this.media.length;
-    tihs.showMedia(this.media[this.currentIndex]);
+    this.showMedia(this.media[this.currentIndex]);
     this.updateStatusDisplay();
   }
 

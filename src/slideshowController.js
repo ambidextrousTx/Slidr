@@ -48,7 +48,10 @@ class SlideshowController {
         this.currentMediaType = 'video';
       } else {
         console.log('Found image media type');
+        console.log('before setting: ' + this.imageElement.src);
+        console.log(path);
         this.imageElement.src = path;
+        console.log('after setting: ' + this.imageElement.src);
         this.imageElement.classList.add('active');
         this.currentMediaType = 'image';
       }

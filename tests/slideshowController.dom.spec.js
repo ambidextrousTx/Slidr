@@ -4,11 +4,14 @@
 
 const SlideshowController = require("../src/slideshowController")
 
+const BASE_URL = 'http://localhost'
+
 describe('SlideshowController (jsdom)', () => {
   let controller;
   let mockModeIndicator, mockModeText, mockCountText, mockImage, mockVideo;
 
   beforeEach(() => {
+
     jest.useFakeTimers();
 
     mockModeIndicator = document.createElement('div');
@@ -29,8 +32,8 @@ describe('SlideshowController (jsdom)', () => {
     mockImage = document.createElement('img');
     mockImage.id = 'slideshow-image';
     mockImage.src = '';
-    mockImage.add = jest.fn();
-    mockImage.remove = jest.fn();
+    mockImage.classList.add = jest.fn();
+    mockImage.classList.remove = jest.fn();
 
     mockVideo = document.createElement('video');
     mockVideo.id = 'slideshow-video';
@@ -38,6 +41,8 @@ describe('SlideshowController (jsdom)', () => {
     mockVideo.pause = jest.fn();
     mockVideo.load = jest.fn();
     mockVideo.addEventListener = jest.fn();
+    mockVideo.classList.add = jest.fn();
+    mockVideo.classList.remove = jest.fn();
 
     controller = new SlideshowController(
       { interval: 3000, resumeDelay: 15000 },
@@ -64,40 +69,18 @@ describe('SlideshowController (jsdom)', () => {
   it('shows image correctly', () => {
     controller.setMedia(['/test/a.jpg']);
     jest.advanceTimersByTime(100);
-    expect(mockImage.src).toBe('/test/a.jpg');
+    expect(mockImage.src).toBe(BASE_URL + '/test/a.jpg');
     expect(mockImage.classList.add).toHaveBeenCalledWith('active');
     expect(mockVideo.classList.add).not.toHaveBeenCalled();
   });
 
   it('setMedia loads first item as image and updates display', () => {
-    const mockImage = { src: '', classList: { add: jest.fn(), remove: jest.fn() } };
-    const mockVideo = { 
-      src: '', 
-      play: jest.fn().mockResolvedValue(undefined),
-      pause: jest.fn(),
-      currentTime: 0,
-      load: jest.fn(),
-      classList: { add: jest.fn(), remove: jest.fn() },
-      addEventListener: jest.fn()
-    };
-
-    const controller = new SlideshowController(
-      { interval: 3000, resumeDelay: 15000 },
-      {
-        imageElement: mockImage,
-        videoElement: mockVideo,
-        modeText: { textContent: '' },
-        countText: { textContent: '' },
-        modeIndicator: { classList: { add: jest.fn(), remove: jest.fn() } }
-      }
-    );
-
     const media = ['/img/a.jpg', '/vid/b.mp4'];
     controller.setMedia(media);
 
-    expect(mockImage.src).toBe('/img/a.jpg');
+    expect(mockImage.src).toBe(BASE_URL + '/img/a.jpg');
     expect(mockImage.classList.contains('active')).toBe(true);
-    expect(mockVideo.src).toBe('/vid/b.mp4')
+    expect(mockVideo.src).toBe(BASE_URL + '/vid/b.mp4')
     expect(mockVideo.classList.contains('active')).toBe(false);
     expect(mockModeText.textContent).toBe('Auto');
     expect(mockCountText.textContent).toBe('1 / 2');

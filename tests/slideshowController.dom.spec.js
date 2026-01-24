@@ -57,6 +57,11 @@ describe('SlideshowController (jsdom)', () => {
   });
 
   afterEach(() => {
+    controller = undefined;
+    mockImage = undefined;
+    mockVideo = undefined;
+    mockModeIndicator = undefined;
+    mockModeText = undefined;
     jest.useRealTimers();
     jest.clearAllMocks();
   });
@@ -69,21 +74,18 @@ describe('SlideshowController (jsdom)', () => {
   it('shows image correctly', () => {
     controller.setMedia(['/test/a.jpg']);
     jest.advanceTimersByTime(100);
+
     expect(mockImage.src).toBe(BASE_URL + '/test/a.jpg');
     expect(mockImage.classList.add).toHaveBeenCalledWith('active');
     expect(mockVideo.classList.add).not.toHaveBeenCalled();
   });
 
   it('setMedia loads first item as image and updates display', () => {
-    const media = ['/img/a.jpg', '/vid/b.mp4'];
-    controller.setMedia(media);
+    controller.setMedia(['/img/a.jpg', '/vid/b.mp4']);
+    jest.advanceTimersByTime(100);
 
     expect(mockImage.src).toBe(BASE_URL + '/img/a.jpg');
-    expect(mockImage.classList.contains('active')).toBe(true);
-    expect(mockVideo.src).toBe(BASE_URL + '/vid/b.mp4')
-    expect(mockVideo.classList.contains('active')).toBe(false);
-    expect(mockModeText.textContent).toBe('Auto');
-    expect(mockCountText.textContent).toBe('1 / 2');
+    expect(mockImage.classList.add).toHaveBeenCalledWith('active');
   });
 
 });

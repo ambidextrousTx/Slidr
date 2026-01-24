@@ -39,7 +39,6 @@ class SlideshowController {
 
     // Small delay to let fade-out start (makes it smoother)
     setTimeout(() => {
-      console.log('timeout was hit');
       if (isVideo) {
         this.videoElement.src = path;
         this.videoElement.load();          // sometimes needed
@@ -47,11 +46,7 @@ class SlideshowController {
         this.videoElement.classList.add('active');
         this.currentMediaType = 'video';
       } else {
-        console.log('Found image media type');
-        console.log('before setting: ' + this.imageElement.src);
-        console.log(path);
         this.imageElement.src = path;
-        console.log('after setting: ' + this.imageElement.src);
         this.imageElement.classList.add('active');
         this.currentMediaType = 'image';
       }
@@ -83,7 +78,7 @@ class SlideshowController {
     this.media = mediaPaths;
     this.currentIndex = 0;
     if (mediaPaths.length > 0) {
-      this.showMedia(mediaPaths[0])
+      this.showMedia(mediaPaths[0]);
     }
   }
 

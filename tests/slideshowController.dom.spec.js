@@ -88,4 +88,28 @@ describe('SlideshowController (jsdom)', () => {
     expect(mockImage.classList.add).toHaveBeenCalledWith('active');
   });
 
+  it('setMedia loads first item as image and advances to a video next', () => {
+    controller.setMedia(['/img/a.jpg', '/vid/b.mp4']);
+
+    // Fast-forward past setTimeout
+    jest.advanceTimersByTime(100);
+
+    expect(mockImage.src).toBe(BASE_URL + '/img/a.jpg');
+    expect(mockImage.classList.add).toHaveBeenCalledWith('active');
+    expect(mockVideo.classList.add).not.toHaveBeenCalled();
+
+    controller.next();
+
+      // Fade-out image
+    expect(mockImage.classList.remove).toHaveBeenCalledWith('active');
+
+    // Fast-forward past setTimeout
+    jest.advanceTimersByTime(100);
+
+    // Fade-in video + play
+    expect(mockVideo.src).toContain('b.mp4');
+    expect(mockVideo.classList.add).toHaveBeenCalledWith('active');
+    expect(mockVideo.play).toHaveBeenCalled();
+  });
+
 });

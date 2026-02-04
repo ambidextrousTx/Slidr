@@ -11,14 +11,26 @@ const controller = new SlideshowController(slideShowElement, {
 })
 
 document.addEventListener('keydown', (event) => {
-    if (event.key === 'ArrowRight') {
-        controller.next();
-        controller.userInteracted();
+  if (event.key === 'ArrowRight') {
+    controller.next();
+    controller.userInteracted();
+  }
+  else if (event.key === 'ArrowLeft') {
+    controller.prev();
+    controller.userInteracted();
+  } else if (event.key === 'F') {
+    if (!document.fullscreenElement) {
+      // Enter fullscreen
+      document.documentElement.requestFullscreen().catch(err => {
+        console.error('Fullscreen request failed:', err);
+      });
+    } else {
+      // Exit fullscreen
+      document.exitFullscreen().catch(err => {
+        console.error('Exit fullscreen failed:', err);
+      });
     }
-    else if (event.key === 'ArrowLeft') {
-        controller.prev();
-        controller.userInteracted();
-    }
+  }
 });
 
 async function init() {

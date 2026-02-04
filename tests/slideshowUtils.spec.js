@@ -11,7 +11,7 @@ describe('slideshowUtils', () => {
     expect(copy.sort()).toEqual(originalArray.sort())
   })
 
-  it('loads and filters image paths from a folder', async () => {
+  it('loads and filters media paths from a folder', async () => {
 
     const mockFs = {
       readdir: jest.fn().mockResolvedValueOnce([

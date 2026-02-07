@@ -11,6 +11,22 @@ body {
   overflow: hidden;
 }
 
+.slideshow-container::after {
+  content: 'No media found in the folder.';
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 24px;
+  text-align: center;
+}
+
+.slideshow-container.empty::after {
+  display: block;
+}
+
 .mode-indicator {
   position: absolute;
   top: 20px;

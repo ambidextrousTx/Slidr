@@ -57,7 +57,15 @@ class SlideshowController {
   }
 
   updateStatusDisplay() {
-    if (!this.modeText || !this.countText) return;
+    if (!this.modeText || !this.countText || !this.modeIndicator) return;
+
+    // Early exit
+    if (this.media.length == 0) {
+      this.modeText.textContent = 'No Media';
+      this.countText.textContent = '';
+      this.modeIndicator.classList.remove('paused');
+      return;
+    }
 
     // Mode
     if (this.isAutoplaying) {
@@ -78,8 +86,16 @@ class SlideshowController {
     this.media = mediaPaths;
     this.currentIndex = 0;
     if (mediaPaths.length > 0) {
+      document.querySelector('.slideshow-container').classList.remove('empty');
       this.showMedia(mediaPaths[0]);
+      this.start();
+    } else {
+      if (this.imageElement) this.imageElement.classList.remove('active');
+      if (this.videoElement) this.videoElement.classList.remove('active');
+      this.videoElement.pause();
+      document.querySelector('.slideshow-container').classList.add('empty');
     }
+    this.updateStatusDisplay();
   }
 
   userInteracted() {

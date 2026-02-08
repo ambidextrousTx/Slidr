@@ -37,6 +37,10 @@ class SlideshowController {
       this.videoElement.classList.remove('active');
     }
 
+    // Don't want video advancing after 3s, so pause here
+    // and conditionally restart for images
+    this.pause();
+
     // Small delay to let fade-out start (makes it smoother)
     setTimeout(() => {
       if (isVideo) {
@@ -49,6 +53,9 @@ class SlideshowController {
         this.imageElement.src = path;
         this.imageElement.classList.add('active');
         this.currentMediaType = 'image';
+        if (this.isAutoplaying) {
+          this.start();
+        }
       }
 
       this.currentSrc = path;

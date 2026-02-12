@@ -8,11 +8,14 @@ const BASE_URL = 'http://localhost'
 
 describe('SlideshowController (jsdom)', () => {
   let controller;
-  let mockModeIndicator, mockModeText, mockCountText, mockImage, mockVideo;
+  let mockContainer, mockModeIndicator, mockModeText, mockCountText, mockImage, mockVideo;
 
   beforeEach(() => {
 
     jest.useFakeTimers();
+
+    mockContainer = document.createElement('div');
+    mockContainer.classList.add('slideshow-container');
 
     mockModeIndicator = document.createElement('div');
     mockModeIndicator.id = 'mode-indicator';
@@ -44,9 +47,14 @@ describe('SlideshowController (jsdom)', () => {
     mockVideo.classList.add = jest.fn();
     mockVideo.classList.remove = jest.fn();
 
+    mockContainer.appendChild(mockImage);
+    mockContainer.appendChild(mockVideo);
+    mockContainer.appendChild(mockModeIndicator);
+
     controller = new SlideshowController(
       { interval: 3000, resumeDelay: 15000 },
       {
+        container: mockContainer,
         imageElement: mockImage,
         videoElement: mockVideo,
         modeText: mockModeText,
@@ -58,6 +66,7 @@ describe('SlideshowController (jsdom)', () => {
 
   afterEach(() => {
     controller = undefined;
+    mockContainer = undefined;
     mockImage = undefined;
     mockVideo = undefined;
     mockModeIndicator = undefined;

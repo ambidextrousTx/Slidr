@@ -1,5 +1,6 @@
 class SlideshowController {
   constructor(options = {}, deps = {}) {
+    this.container = deps.container || document.getElementsByClassName('slideshow-container')[0];
     this.imageElement = deps.imageElement || document.getElementById('slideshow-image');
     this.videoElement = deps.videoElement || document.getElementById('slideshow-video');
     this.modeIndicator = deps.modeIndicator || document.getElementById('mode-indicator');
@@ -93,14 +94,14 @@ class SlideshowController {
     this.media = mediaPaths;
     this.currentIndex = 0;
     if (mediaPaths.length > 0) {
-      document.querySelector('.slideshow-container').classList.remove('empty');
+      this.container.classList.remove('empty');
       this.showMedia(mediaPaths[0]);
       this.start();
     } else {
       if (this.imageElement) this.imageElement.classList.remove('active');
       if (this.videoElement) this.videoElement.classList.remove('active');
       this.videoElement.pause();
-      document.querySelector('.slideshow-container').classList.add('empty');
+      this.container.classList.add('empty');
     }
     this.updateStatusDisplay();
   }

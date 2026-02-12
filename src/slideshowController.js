@@ -13,6 +13,7 @@ class SlideshowController {
     this.currentIndex = 0;
     this.timerId = null;
     this.isAutoplaying = false;
+    this.isTimerPausedForVideo = false;
     this.resumeTimeoutId = null;
     this.resumeDelayMs = options.resumeDelay || 15000; // 15 seconds default
 
@@ -107,17 +108,7 @@ class SlideshowController {
   }
 
   userInteracted() {
-    this.pause();
-
-    if (this.resumeTimeoutId) {
-      clearTimeout(this.resumeTimeoutId)
-      this.resumeTimeoutId = null;
-    }
-
-    this.resumeTimeoutId = setTimeout(() => {
-      this.start();
-      this.resumeTimeoutId = null;
-    }, this.resumeDelayMs);
+    this.userPause();
   }
 
   start() {
@@ -156,9 +147,20 @@ class SlideshowController {
       clearInterval(this.timerId);
       this.timerId = null;
     }
+  }
 
+  userPause() {
+    this.pause();
     this.isAutoplaying = false;
     this.updateStatusDisplay();
+
+    // Start the resume timeout
+    if (this.resumeTimeoutId) clearTimeout(this.resumeTimeoutId);
+    this.resumeTimeoutId = setTimeout(() => {
+      this.isAutoplaying = true;
+      this.start(false);             // resume from current, no immediate jump
+      this.updateStatusDisplay();
+    }, this.resumeDelayMs);
   }
 }
 

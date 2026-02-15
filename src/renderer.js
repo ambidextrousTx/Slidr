@@ -1,14 +1,13 @@
-const fs = require('fs').promises
-const path = require('path')
-const { loadMediaPaths, shuffleArray } = require('./src/slideshowUtils.js')
+import { shuffleArray } from './slideshowUtils.js'
+import { SlideshowController } from './slideshowController.js'
 
-const imageFolder = process.argv[process.argv.length - 1] // this is the additionalArguments
 const slideShowElement = document.getElementById('slideshow-image')
-const SlideshowController = require('./src/slideshowController.js')
 const controller = new SlideshowController(slideShowElement, {
   interval: 3000,
   resumeDelayMs: 15000 
 })
+
+let currentFolder = null;
 
 document.addEventListener('keydown', (event) => {
   if (event.key === 'ArrowRight') {
@@ -33,16 +32,30 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
-async function init() {
+document.getElementById('choose-folder-btn').addEventListener('click', async () => {
+  const folderPath = await window.electronAPI.openFolderDialog();
+  if (folderPath) {
+    await loadAndSetMedia(folderPath);
+  }
+});
+
+async function loadAndSetMedia(folderPath) {
   try {
-    const mediaPaths = await loadMediaPaths(imageFolder, fs, path)
-    shuffleArray(mediaPaths)
-    controller.setMedia(mediaPaths)
-    controller.start()
+    const mediaPaths = await window.electronAPI.loadMedia(folderPath);
+    shuffleArray(mediaPaths);
+    controller.setMedia(mediaPaths);
+    currentFolder = folderPath;
   } catch (err) {
-    console.error('Failed to load media: ', err)
-    slideShowElement.alt = 'Error loading media'
+    console.error('Load failed:', err);
   }
 }
 
-window.addEventListener('load', init)
+async function init() {
+  const cliPath = await window.electronAPI.getCliArg();
+  if (cliPath) {
+    currentFolder = cliPath;
+    await loadAndSetMedia(cliPath);
+  }
+}
+
+window.addEventListener('load', init);

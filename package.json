@@ -2,6 +2,7 @@
   "name": "slidr",
   "version": "1.0.0",
   "description": "Electron-based random image slideshow viewer",
+  "type": "module",
   "main": "src/index.js",
   "scripts": {
     "test": "jest --coverage",

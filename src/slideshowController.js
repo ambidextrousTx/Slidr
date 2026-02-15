@@ -1,4 +1,4 @@
-class SlideshowController {
+export class SlideshowController {
   constructor(options = {}, deps = {}) {
     this.container = deps.container || document.getElementsByClassName('slideshow-container')[0];
     this.imageElement = deps.imageElement || document.getElementById('slideshow-image');
@@ -163,5 +163,3 @@ class SlideshowController {
     }, this.resumeDelayMs);
   }
 }
-
-module.exports = SlideshowController

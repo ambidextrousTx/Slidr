@@ -75,3 +75,22 @@ body {
   opacity: 1;
   pointer-events: auto;
 }
+
+.choose-folder-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+  padding: 8px 16px;
+  background: rgba(255,255,255,0.2);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.4);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.choose-folder-btn:hover {
+  background: rgba(255,255,255,0.35);
+}

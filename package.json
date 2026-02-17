@@ -6,8 +6,8 @@
   "main": "src/index.js",
   "scripts": {
     "test": "jest --coverage",
-    "test:node": "jest --selectProjects=node",
-    "test:jsdom": "jest --selectProjects=jsdom",
+    "test:node": "node --experimental-vm-modules ./node_modules/.bin/jest --selectProjects=node",
+    "test:jsdom": "node --experimental-vm-modules ./node_modules/.bin/jest --selectProjects=jsdom",
     "test:watch": "jest --watch",
     "start": "electron ."
   },

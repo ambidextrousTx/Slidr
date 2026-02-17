@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-const SlideshowController = require("../src/slideshowController")
+import { SlideshowController } from "../src/slideshowController.js";
 
 const BASE_URL = 'http://localhost'
 

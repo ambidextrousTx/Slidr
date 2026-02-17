@@ -1,4 +1,4 @@
-const { loadMediaPaths, shuffleArray } = require('../src/slideshowUtils.js')
+import { shuffleArray } from '../src/slideshowUtils.js';
 
 describe('slideshowUtils', () => {
 

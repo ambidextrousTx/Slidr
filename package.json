@@ -17,7 +17,8 @@
         "displayName": "node",
         "testEnvironment": "node",
         "testMatch": [
-          "**/*.spec.js"
+          "**/*.spec.js",
+          "!**/*.dom.spec.js"
         ]
       },
       {

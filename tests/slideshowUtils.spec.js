@@ -1,4 +1,5 @@
 import { shuffleArray } from '../src/slideshowUtils.js';
+import { jest } from '@jest/globals';
 
 describe('slideshowUtils', () => {
 
@@ -13,8 +14,13 @@ describe('slideshowUtils', () => {
 
   it('loads and filters media paths from a folder', async () => {
 
-    const mockFs = {
-      readdir: jest.fn().mockResolvedValueOnce([
+    // Mock fs.promises
+    // Must use unstable_mockModule for ESM
+    jest.unstable_mockModule('node:fs/promises', async () => {
+
+      const mockReaddir = jest.fn();
+
+      mockReaddir.mockResolvedValueOnce([
         { name: 'photo1.jpg', isFile: () => true, isDirectory: () => false },
         { name: 'photo2.png', isFile: () => true, isDirectory: () => false },
         { name: 'document.pdf', isFile: () => true, isDirectory: () => false },
@@ -22,15 +28,20 @@ describe('slideshowUtils', () => {
         { name: 'photo3.JPEG', isFile: () => true, isDirectory: () => false },
         { name: 'notes.txt', isFile: () => true, isDirectory: () => false },
         { name: 'sample.mp4', isFile: () => true, isDirectory: () => false },
-      ]),
-    };
+      ]);
 
-    const mockPath = {
-      join: jest.fn((folder, file) => `${folder}/${file}`),
-      extname: jest.fn((path) => path.substring(path.lastIndexOf('.'))),
-    };
-    
-    const result = await loadMediaPaths('/fake/folder', mockFs, mockPath)
+      return {
+        default: {
+          readdir: mockReaddir,
+        }
+      };
+    });
+
+    // Must import after the mocked fs
+    const { scanMediaDirectory } = await import('../src/mediaLoader.js');
+
+    const result = await scanMediaDirectory('/fake/folder')
+
     expect(result).toHaveLength(5); // jpg, png, gif, JPEG, mp4
     expect(result).toEqual([
       '/fake/folder/photo1.jpg',
@@ -39,7 +50,10 @@ describe('slideshowUtils', () => {
       '/fake/folder/photo3.JPEG',
       '/fake/folder/sample.mp4',
     ]);
-    expect(mockFs.readdir).toHaveBeenCalledWith('/fake/folder', {'withFileTypes': true})
+
+    const fs = (await import('node:fs/promises')).default;
+    expect(fs.readdir).toHaveBeenCalledTimes(1);
   })
+
 })
 

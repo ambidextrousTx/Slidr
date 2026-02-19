@@ -1,7 +1,7 @@
 import { app, BrowserWindow, dialog, ipcMain } from 'electron';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import fs from 'node:fs/promises';
+import { scanMediaDirectory } from './mediaLoader.js'
 import path from 'node:path';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -45,42 +45,8 @@ ipcMain.handle('get-cli-arg', () => process.argv[2]);
 
 ipcMain.handle('load-media', async (event, folderPath) => {
   try {
-    const mediaExtensions = new Set([
-      '.jpg', '.jpeg', '.png', '.gif', '.avif', '.webp', '.mp4', '.webm'
-    ]);
-
-    const result = [];
-
-    /**
-   * Recursive helper function
-   * @param {string} currentDir
-   */
-    async function scanDir(currentDir) {
-      try {
-        const entries = await fs.readdir(currentDir, { withFileTypes: true });
-
-        for (const entry of entries) {
-          const fullPath = path.join(currentDir, entry.name);
-
-          if (entry.isDirectory()) {
-            // Recurse into subdirectory
-            await scanDir(fullPath);
-          }
-          else if (entry.isFile()) {
-            const ext = path.extname(entry.name).toLowerCase();
-            if (mediaExtensions.has(ext)) {
-              result.push(fullPath);
-            }
-          }
-        }
-      } catch (err) {
-        console.warn(`Could not read directory ${currentDir}:`, err.message);
-      }
-    }
-
-    await scanDir(folderPath);
-    console.log(`Loaded ${result.length} media files from ${folderPath}`);
-    return result;
+    const media = await scanMediaDirectory(folderPath);
+    return media;
   } catch (err) {
     console.error('Load media failed:', err);
     throw err; // Let renderer handle error

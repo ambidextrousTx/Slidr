@@ -3,6 +3,7 @@
  */
 
 import { SlideshowController } from "../src/slideshowController.js";
+import { jest } from '@jest/globals';
 
 const BASE_URL = 'http://localhost'
 

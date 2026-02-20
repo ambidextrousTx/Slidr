@@ -45,6 +45,7 @@ async function loadAndSetMedia(folderPath) {
     shuffleArray(mediaPaths);
     controller.setMedia(mediaPaths);
     currentFolder = folderPath;
+    await window.electronAPI.setLastFolder(folderPath);
   } catch (err) {
     console.error('Load failed:', err);
   }
@@ -55,6 +56,11 @@ async function init() {
   if (cliPath) {
     currentFolder = cliPath;
     await loadAndSetMedia(cliPath);
+  } else {
+    const lastFolder = await window.electronAPI.getLastFolder();
+    if (lastFolder) {
+      await loadAndSetMedia(lastFolder);
+    }
   }
 }
 

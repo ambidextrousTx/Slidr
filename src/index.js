@@ -3,10 +3,12 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { scanMediaDirectory } from './mediaLoader.js'
 import path from 'node:path';
+import Store from 'electron-store';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+const store = new Store();
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -36,6 +38,14 @@ ipcMain.handle('dialog:open-folder', async (event, options) => {
 });
 
 ipcMain.handle('get-cli-arg', () => process.argv[2]);
+
+ipcMain.handle('get-last-folder', () => {
+    return store.get('lastFolder');
+})
+
+ipcMain.handle('set-last-folder', async (event, folderPath) => {
+  store.set('lastFolder', folderPath);
+})
 
 ipcMain.handle('load-media', async (event, folderPath) => {
   try {

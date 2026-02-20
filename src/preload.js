@@ -4,6 +4,8 @@ const { contextBridge, ipcRenderer } = require('electron');
 contextBridge.exposeInMainWorld('electronAPI', {
   openFolderDialog: () => ipcRenderer.invoke('dialog:open-folder'),
   loadMedia: (folderPath) =>  ipcRenderer.invoke('load-media', folderPath),
-  getCliArg: () => ipcRenderer.invoke('get-cli-arg')
+  getCliArg: () => ipcRenderer.invoke('get-cli-arg'),
+  getLastFolder: () => ipcRenderer.invoke('get-last-folder'),
+  setLastFolder: (folderPath) => ipcRenderer.invoke('set-last-folder', folderPath)
 });
 

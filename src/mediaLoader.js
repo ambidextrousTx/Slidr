@@ -15,8 +15,6 @@ export async function scanMediaDirectory(folderPath) {
   async function scanDir(currentDir) {
     try {
       const entries = await fs.readdir(currentDir, { withFileTypes: true });
-      console.log("entries are " + entries);
-
       for (const entry of entries) {
         const fullPath = path.join(currentDir, entry.name);
 
